@@ -43,7 +43,7 @@ router.post('/', function(req, res) {
     var newTask = {
         name :req.body.name,
         description: req.body.description ? req.body.description : "No description",
-        deadline: req.body.deadline,
+        deadline: req.body.deadline ? req.body.deadline : "",
         completed: req.body.complete=="true" ? true : false,
         assignedUser: req.body.assignedUser ? req.body.assignedUser : "",
         assignedUserName: req.body.assignedUserName ? req.body.assignedUserName : "unassigned"
@@ -97,7 +97,7 @@ router.put('/:id',function(req,res){
     var newTask = {
         name :req.body.name,
         description: req.body.description ? req.body.description : "No description",
-        deadline: req.body.deadline,
+        deadline: req.body.deadline ? req.body.deadline : "",
         completed: req.body.completed=="true" ? true : false,
         assignedUser: req.body.assignedUser ? req.body.assignedUser : "",
         assignedUserName: req.body.assignedUserName ? req.body.assignedUserName : "unassigned"

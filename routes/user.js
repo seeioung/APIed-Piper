@@ -54,7 +54,7 @@ router.post('/', function(req, res) {
         } else {
             var userPost = {
                 name: req.body.name,
-                email: req.body.email,
+                email: req.body.email ? req.body.email : "",
                 pendingTasks: req.body.pendingTasks ? req.body.pendingTasks : []
             };
 
@@ -128,7 +128,7 @@ router.put('/:id',function(req,res){
         } else {
             var userPost = {
                 name: req.body.name,
-                email: req.body.email,
+                email: req.body.email ? req.body.email : "",,
                 pendingTasks: req.body.pendingTasks ? req.body.pendingTasks : []
             };
 
