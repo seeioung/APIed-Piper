@@ -117,7 +117,7 @@ router.put('/:id',function(req,res){
                     data: task
                 });
             } else {
-                res.status(201).send({
+                res.status(200).send({
                     message: 'user information updated',
                     data: task
                 });
@@ -144,7 +144,7 @@ router.delete('/:id', function(req, res) {
                     data: []
                 });
             } else {
-                res.status(201).send({
+                res.status(200).send({
                     message: 'Task deleted',
                     data: task
                 });

@@ -144,7 +144,7 @@ router.put('/:id',function(req,res){
                         data: user
                     });
                 }else {
-                    res.status(201).send({
+                    res.status(200).send({
                         message: 'user information updated',
                         data: user
                     });
@@ -172,7 +172,7 @@ router.delete('/:id', function(req, res) {
                 data: user
             });
         } else {
-            res.status(201).send({
+            res.status(200).send({
                 message: 'User deleted',
                 data: user
             });
