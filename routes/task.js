@@ -44,7 +44,7 @@ router.post('/', function(req, res) {
         name :req.body.name,
         description: req.body.description ? req.body.description : "No description",
         deadline: req.body.deadline,
-        completed: req.body.complete ? req.body.complete : false,
+        completed: req.body.complete=="true" ? true : false,
         assignedUser: req.body.assignedUser ? req.body.assignedUser : "",
         assignedUserName: req.body.assignedUserName ? req.body.assignedUserName : "unassigned"
     };
@@ -98,7 +98,7 @@ router.put('/:id',function(req,res){
         name :req.body.name,
         description: req.body.description ? req.body.description : "No description",
         deadline: req.body.deadline,
-        completed: req.body.completed ? req.body.completed : false,
+        completed: req.body.completed=="true" ? true : false,
         assignedUser: req.body.assignedUser ? req.body.assignedUser : "",
         assignedUserName: req.body.assignedUserName ? req.body.assignedUserName : "unassigned"
     };
