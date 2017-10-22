@@ -128,7 +128,7 @@ router.put('/:id',function(req,res){
         } else {
             var userPost = {
                 name: req.body.name,
-                email: req.body.email ? req.body.email : "",,
+                email: req.body.email ? req.body.email : "",
                 pendingTasks: req.body.pendingTasks ? req.body.pendingTasks : []
             };
 
@@ -165,7 +165,9 @@ router.delete('/:id', function(req, res) {
                 message: err,
                 data: []
             });
-        } else if (!JSON.parse(user).n) {
+        // } else if (!JSON.parse(user).n) {
+        } else if (!user || !JSON.parse(user).n) {
+
             console.log("hellow world: ", JSON.parse(user).n);
             res.status(404).send({
                 message: 'User Not Found',
