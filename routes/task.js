@@ -71,18 +71,18 @@ router.get('/:id',function(req,res){
         if(err) {
             res.status(500).send({
                 message: err,
-                data: []
+                data: {}
             });
         } else {
             if (task.length === 0) {
                 res.status(404).send({
                     message: 'Task Not Found',
-                    data: task
+                    data: task[0]
                 });
             } else {
                 res.status(200).send({
                     message: 'OK',
-                    data: task
+                    data: task[0]
                 });
             }
 
@@ -135,18 +135,18 @@ router.delete('/:id', function(req, res) {
         if(err) {
             res.status(500).send({
                 message: err,
-                data: []
+                data: {}
             });
         } else {
             if (!JSON.parse(task).n) {
                 res.status(404).send({
                     message: 'Task Not Found',
-                    data: []
+                    data: {}
                 });
             } else {
                 res.status(200).send({
                     message: 'Task deleted',
-                    data: task
+                    data: task[0]
                 });
             }
 
