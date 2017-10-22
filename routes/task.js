@@ -42,7 +42,7 @@ router.post('/', function(req, res) {
 
     var newTask = {
         name :req.body.name,
-        description: req.body.name ? req.body.name : "No description",
+        description: req.body.description ? req.body.description : "No description",
         deadline: req.body.deadline,
         completed: req.body.complete ? req.body.complete : false,
         assignedUser: req.body.assignedUser ? req.body.assignedUser : "",
@@ -114,12 +114,12 @@ router.put('/:id',function(req,res){
             if (!task) {
                 res.status(404).send({
                     message: 'task Not Found',
-                    data: task
+                    data: newTask
                 });
             } else {
                 res.status(200).send({
                     message: 'user information updated',
-                    data: task
+                    data: newTask
                 });
             }
 

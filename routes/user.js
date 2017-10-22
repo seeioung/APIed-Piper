@@ -141,12 +141,12 @@ router.put('/:id',function(req,res){
                 } else if (!user) {
                     res.status(404).send({
                         message: 'User Not Found',
-                        data: user
+                        data: userPost
                     });
                 }else {
                     res.status(200).send({
                         message: 'user information updated',
-                        data: user
+                        data: userPost
                     });
                 }
             });
