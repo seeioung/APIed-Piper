@@ -94,17 +94,30 @@ router.put('/:id',function(req,res){
     console.log("task put /:id");
     // console.log(req.body);
 
-    var newTask = {
-        name :req.body.name,
-        description: req.body.description ? req.body.description : "No description",
-        deadline: req.body.deadline ? req.body.deadline : "",
-        completed: req.body.completed=="true" ? true : false,
-        assignedUser: req.body.assignedUser ? req.body.assignedUser : "",
-        assignedUserName: req.body.assignedUserName ? req.body.assignedUserName : "unassigned"
-    };
+    var newTask = {};
+
+    if (req.body.name){
+        newTask.name = req.body.name;
+    }
+    if (req.body.description){
+        newTask.description = req.body.description;
+    }
+    if (req.body.deadline){
+        newTask.deadline = req.body.deadline;
+    }
+    if (req.body.completed){
+        newTask.completed = req.body.completed;
+    }
+    if (req.body.assignedUser){
+        newTask.assignedUser = req.body.assignedUser;
+    }
+    if (req.body.assignedUserName){
+        newTask.assignedUserName = req.body.assignedUserName;
+    }
 
 
-    tasks.findByIdAndUpdate({_id: req.params.id}, newTask).exec(function(err, task) {
+
+    tasks.findByIdAndUpdate({_id: req.params.id}, {$set:newTask}, {new: true}).exec(function(err, task) {
         if(err) {
             res.status(500).send({
                 message: err,
@@ -114,12 +127,12 @@ router.put('/:id',function(req,res){
             if (!task) {
                 res.status(404).send({
                     message: 'task Not Found',
-                    data: newTask
+                    data: task
                 });
             } else {
                 res.status(200).send({
                     message: 'user information updated',
-                    data: newTask
+                    data: task
                 });
             }
 
