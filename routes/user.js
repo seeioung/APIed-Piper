@@ -102,13 +102,13 @@ router.put('/:id',function(req,res){
     console.log("user put /:id");
     // console.log(req.body);
 
-    if (!req.body.name || !req.body.email) {
-        res.status(400).send({
-            message: "You need to have both a name and a email",
-            data: []
-        });
-        return;
-    }
+    // if (!req.body.name || !req.body.email) {
+    //     res.status(400).send({
+    //         message: "You need to have both a name and a email",
+    //         data: []
+    //     });
+    //     return;
+    // }
 
     user.find({email: req.body.email}).exec(function(err, users) {
         if(err) {
@@ -133,10 +133,13 @@ router.put('/:id',function(req,res){
                 data: []
             });
         } else {
-            var updatedUser = {
-                name: req.body.name,
-                email: req.body.email ? req.body.email : "",
-            };
+            var updatedUser = {};
+            if (req.body.name){
+                updatedUser.name = req.body.name;
+            }
+            if (req.body.email) {
+                updatedUser.email = req.body.email;
+            }
             if (req.body.pendingTasks){
                 updatedUser.pendingTasks = req.body.pendingTasks;
             }
