@@ -136,10 +136,12 @@ router.put('/:id',function(req,res){
             var updatedUser = {
                 name: req.body.name,
                 email: req.body.email ? req.body.email : "",
-                pendingTasks: req.body.pendingTasks ? req.body.pendingTasks : []
             };
+            if (req.body.pendingTasks){
+                updatedUser.pendingTasks = req.body.pendingTasks;
+            }
 
-            user.findByIdAndUpdate(req.params.id, updatedUser, {new: true}).exec(function(err, user) {
+            user.findByIdAndUpdate(req.params.id, {$set:updatedUser}, {new: true}).exec(function(err, user) {
                 if(err) {
                     res.status(500).send({
                         message: err,
