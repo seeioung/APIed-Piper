@@ -87,7 +87,7 @@ router.get('/:id',function(req,res){
         } else if (user.length === 0) {
             res.status(404).send({
                 message: 'User Not Found',
-                data: user[0]
+                data: []
             })
         } else {
             res.status(200).send({
