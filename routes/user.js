@@ -102,6 +102,13 @@ router.put('/:id',function(req,res){
     console.log("user put /:id");
     // console.log(req.body);
 
+    if (!req.body.name || !req.body.email) {
+        res.status(400).send({
+            message: "You need to have both a name and a email",
+            data: []
+        });
+        return;
+    }
 
     user.find({email: req.body.email}).exec(function(err, users) {
         if(err) {
@@ -123,16 +130,16 @@ router.put('/:id',function(req,res){
         if (dupEmail) {
             res.status(400).send({
                 message: 'Email already existed',
-                data: users
+                data: []
             });
         } else {
-            var userPost = {
+            var updatedUser = {
                 name: req.body.name,
                 email: req.body.email ? req.body.email : "",
                 pendingTasks: req.body.pendingTasks ? req.body.pendingTasks : []
             };
 
-            user.findByIdAndUpdate({_id: req.params.id}, userPost).exec(function(err, user) {
+            user.findByIdAndUpdate(req.params.id, updatedUser, {new: true}).exec(function(err, user) {
                 if(err) {
                     res.status(500).send({
                         message: err,
@@ -141,12 +148,12 @@ router.put('/:id',function(req,res){
                 } else if (!user) {
                     res.status(404).send({
                         message: 'User Not Found',
-                        data: userPost
+                        data: user
                     });
                 }else {
                     res.status(200).send({
                         message: 'user information updated',
-                        data: userPost
+                        data: user
                     });
                 }
             });
