@@ -44,7 +44,7 @@ router.post('/', function(req, res) {
         if(err) {
             res.status(500).send({
                 message: err,
-                data: []
+                data: {}
             });
         } else if (users.length !== 0) {
             res.status(400).send({
@@ -175,7 +175,7 @@ router.delete('/:id', function(req, res) {
         if(err) {
             res.status(500).send({
                 message: err,
-                data: []
+                data: {}
             });
         // } else if (!JSON.parse(user).n) {
         } else if (!user || !JSON.parse(user).n) {

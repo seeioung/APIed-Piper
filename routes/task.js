@@ -14,7 +14,7 @@ router.get('/', function(req, res) {
     var query = taskSchema.find({}).where(whereQuery).sort(sortQuery).select(selectQuery).skip(skipQuery);
     query = req.query.limit ? query = query.limit(parseInt(req.query.limit)) : query;
     query = req.query.count === 'true' ? query = query.count() : query;
-    query.exec(function(err, task) {
+    query.exec(function(err, tasks) {
         if(err) {
             res.status(500).send({
                 message: err,
@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
         } else {
             res.status(200).send({
                 message: 'OK',
-                data: task
+                data: tasks
             })
         }
     });
@@ -36,7 +36,7 @@ router.post('/', function(req, res) {
     if (!req.body.name || !req.body.deadline) {
         res.staus(400).send({
             message: "You need to have both a name and a deadline",
-            data: []
+            data: {}
         });
         return;
     }
@@ -54,7 +54,7 @@ router.post('/', function(req, res) {
         if(err) {
             res.staus(500).send({
                 message: err,
-                data: []
+                data: {}
             });
         } else {
             res.status(201).send({
@@ -122,13 +122,13 @@ router.put('/:id',function(req,res){
         if(err) {
             res.status(500).send({
                 message: err,
-                data: []
+                data: {}
             });
         } else {
             if (!task) {
                 res.status(404).send({
                     message: 'task Not Found',
-                    data: task
+                    data: {}
                 });
             } else {
                 res.status(200).send({
@@ -160,7 +160,7 @@ router.delete('/:id', function(req, res) {
             } else {
                 res.status(200).send({
                     message: 'Task deleted',
-                    data: task[0]
+                    data: task
                 });
             }
 
