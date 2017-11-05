@@ -1,7 +1,7 @@
 //
 var express = require('express'),
     router = express.Router(),
-    user = require('../models/user.js');
+    userSchema = require('../models/user.js');
 
 
 router.get('/', function(req, res) {
@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
     var selectQuery = req.query.select ? JSON.parse(req.query.select) : {};
     var skipQuery = req.query.skip ? parseInt(req.query.skip) : 0;
 
-    var query = user.find({}).where(whereQuery).sort(sortQuery).select(selectQuery).skip(skipQuery);
+    var query = userSchema.find({}).where(whereQuery).sort(sortQuery).select(selectQuery).skip(skipQuery);
     query = req.query.limit ? query = query.limit(parseInt(req.query.limit)) : query;
     query = req.query.count === 'true' ? query = query.count() : query;
     query.exec(function(err, users) {
@@ -40,7 +40,7 @@ router.post('/', function(req, res) {
         return;
     }
 
-    user.find({email: req.body.email}).exec(function(err, users) {
+    userSchema.find({email: req.body.email}).exec(function(err, users) {
         if(err) {
             res.status(500).send({
                 message: err,
@@ -49,7 +49,7 @@ router.post('/', function(req, res) {
         } else if (users.length !== 0) {
             res.status(400).send({
                 message: 'Email already existed',
-                data: users
+                data: users[0]
             });
         } else {
             var newUser = {
@@ -58,16 +58,16 @@ router.post('/', function(req, res) {
                 pendingTasks: req.body.pendingTasks ? req.body.pendingTasks : []
             };
 
-            user.create(newUser, function(err, users) {
+            userSchema.create(newUser, function(err, user) {
                 if(err) {
                     res.status(500).send({
                         message: err,
-                        data: []
+                        data: {}
                     });
                 } else {
                     res.status(201).send({
                         message: 'OK',
-                        data: users
+                        data: user
                     });
                 }
             })
@@ -78,21 +78,21 @@ router.post('/', function(req, res) {
 
 router.get('/:id',function(req,res){
     console.log("user get /:id");
-    user.find({_id: req.params.id}).exec(function(err, user) {
+    userSchema.find({_id: req.params.id}).exec(function(err, users) {
         if(err) {
             res.status(500).send({
                 message: err,
-                data: []
+                data: {}
             });
-        } else if (user.length === 0) {
+        } else if (users.length === 0) {
             res.status(404).send({
                 message: 'User Not Found',
-                data: []
+                data: {}
             })
         } else {
             res.status(200).send({
                 message: 'OK',
-                data: user[0]
+                data: users[0]
             })
         }
     });
@@ -110,11 +110,11 @@ router.put('/:id',function(req,res){
     //     return;
     // }
 
-    user.find({email: req.body.email}).exec(function(err, users) {
+    userSchema.find({email: req.body.email}).exec(function(err, users) {
         if(err) {
             res.status(500).send({
                 message: err,
-                data: []
+                data: {}
             });
             return;
         }
@@ -130,7 +130,7 @@ router.put('/:id',function(req,res){
         if (dupEmail) {
             res.status(400).send({
                 message: 'Email already existed',
-                data: []
+                data: {}
             });
         } else {
             var updatedUser = {};
@@ -144,16 +144,16 @@ router.put('/:id',function(req,res){
                 updatedUser.pendingTasks = req.body.pendingTasks;
             }
 
-            user.findByIdAndUpdate(req.params.id, {$set:updatedUser}, {new: true}).exec(function(err, user) {
+            userSchema.findByIdAndUpdate(req.params.id, {$set:updatedUser}, {new: true}).exec(function(err, user) {
                 if(err) {
                     res.status(500).send({
                         message: err,
-                        data: []
+                        data: {}
                     });
                 } else if (!user) {
                     res.status(404).send({
                         message: 'User Not Found',
-                        data: []
+                        data: {}
                     });
                 }else {
                     res.status(200).send({
@@ -171,7 +171,7 @@ router.put('/:id',function(req,res){
 
 router.delete('/:id', function(req, res) {
     console.log("user delete /:id");
-    user.remove({_id: req.params.id}, function(err, user) {
+    userSchema.remove({_id: req.params.id}, function(err, user) {
         if(err) {
             res.status(500).send({
                 message: err,
@@ -183,7 +183,7 @@ router.delete('/:id', function(req, res) {
             console.log("hellow world: ", JSON.parse(user).n);
             res.status(404).send({
                 message: 'User Not Found',
-                data: []
+                data: {}
             });
         } else {
             res.status(200).send({
