@@ -15,18 +15,18 @@ router.get('/', function(req, res) {
     query = req.query.limit ? query = query.limit(parseInt(req.query.limit)) : query;
     query = req.query.count === 'true' ? query = query.count() : query;
     query.exec(function(err, users) {
-            if(err) {
-                res.status(500).send({
-                    message: err,
-                    data: []
-                });
-            } else {
-                res.status(200).send({
-                    message: 'OK',
-                    data: users
-                })
-            }
-        });
+        if(err) {
+            res.status(500).send({
+                message: err,
+                data: []
+            });
+        } else {
+            res.status(200).send({
+                message: 'OK',
+                data: users
+            })
+        }
+    });
 
 });
 
@@ -52,13 +52,13 @@ router.post('/', function(req, res) {
                 data: users
             });
         } else {
-            var userPost = {
+            var newUser = {
                 name: req.body.name,
-                email: req.body.email ? req.body.email : "",
+                email: req.body.email,
                 pendingTasks: req.body.pendingTasks ? req.body.pendingTasks : []
             };
 
-            user.create(userPost, function(err, users) {
+            user.create(newUser, function(err, users) {
                 if(err) {
                     res.status(500).send({
                         message: err,
@@ -153,7 +153,7 @@ router.put('/:id',function(req,res){
                 } else if (!user) {
                     res.status(404).send({
                         message: 'User Not Found',
-                        data: user
+                        data: []
                     });
                 }else {
                     res.status(200).send({
@@ -183,7 +183,7 @@ router.delete('/:id', function(req, res) {
             console.log("hellow world: ", JSON.parse(user).n);
             res.status(404).send({
                 message: 'User Not Found',
-                data: user
+                data: []
             });
         } else {
             res.status(200).send({

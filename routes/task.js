@@ -38,12 +38,13 @@ router.post('/', function(req, res) {
             message: "You need to have both a name and a deadline",
             data: []
         });
+        return;
     }
 
     var newTask = {
         name :req.body.name,
         description: req.body.description ? req.body.description : "No description",
-        deadline: req.body.deadline ? req.body.deadline : "",
+        deadline: req.body.deadline,
         completed: req.body.complete=="true" ? true : false,
         assignedUser: req.body.assignedUser ? req.body.assignedUser : "",
         assignedUserName: req.body.assignedUserName ? req.body.assignedUserName : "unassigned"
@@ -77,7 +78,7 @@ router.get('/:id',function(req,res){
             if (task.length === 0) {
                 res.status(404).send({
                     message: 'Task Not Found',
-                    data: task[0]
+                    data: {}
                 });
             } else {
                 res.status(200).send({
