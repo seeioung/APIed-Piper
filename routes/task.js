@@ -1,7 +1,7 @@
 //
 var express = require('express'),
     router = express.Router(),
-    tasks = require('../models/task.js');
+    taskSchema = require('../models/task.js');
 
 
 router.get('/', function(req, res) {
@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
     var selectQuery = req.query.select ? JSON.parse(req.query.select) : {};
     var skipQuery = req.query.skip ? parseInt(req.query.skip) : 0;
 
-    var query = tasks.find({}).where(whereQuery).sort(sortQuery).select(selectQuery).skip(skipQuery);
+    var query = taskSchema.find({}).where(whereQuery).sort(sortQuery).select(selectQuery).skip(skipQuery);
     query = req.query.limit ? query = query.limit(parseInt(req.query.limit)) : query;
     query = req.query.count === 'true' ? query = query.count() : query;
     query.exec(function(err, task) {
@@ -50,7 +50,7 @@ router.post('/', function(req, res) {
         assignedUserName: req.body.assignedUserName ? req.body.assignedUserName : "unassigned"
     };
 
-    tasks.create(newTask, function(err, task) {
+    taskSchema.create(newTask, function(err, task) {
         if(err) {
             res.staus(500).send({
                 message: err,
@@ -68,7 +68,7 @@ router.post('/', function(req, res) {
 
 router.get('/:id',function(req,res){
     console.log("task get /:id");
-    tasks.find({_id: req.params.id}).exec(function(err, task) {
+    taskSchema.find({_id: req.params.id}).exec(function(err, task) {
         if(err) {
             res.status(500).send({
                 message: err,
@@ -118,7 +118,7 @@ router.put('/:id',function(req,res){
 
 
 
-    tasks.findByIdAndUpdate({_id: req.params.id}, {$set:newTask}, {new: true}).exec(function(err, task) {
+    taskSchema.findByIdAndUpdate({_id: req.params.id}, {$set:newTask}, {new: true}).exec(function(err, task) {
         if(err) {
             res.status(500).send({
                 message: err,
@@ -145,7 +145,7 @@ router.put('/:id',function(req,res){
 
 router.delete('/:id', function(req, res) {
     console.log("task delete /:id");
-    tasks.remove({_id: req.params.id}, function(err, task) {
+    taskSchema.remove({_id: req.params.id}, function(err, task) {
         if(err) {
             res.status(500).send({
                 message: err,
